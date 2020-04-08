@@ -10,8 +10,8 @@ class Student
 
   def self.create_table
     sql = <<-SQL
-      CREATE TABLE students (
-        id INTEGER PRIMARY KEY,
+      CREATE TABLE IF NOT EXISTS students (
+        id INTEGER PRIMARY key,
         name TEXT,
         grade INTEGER
       );
@@ -22,14 +22,13 @@ class Student
 
   def self.drop_table
     sql = "DROP TABLE students;"
-
     DB[:conn].execute(sql)
   end
 
   def save
     sql = <<-SQL
       INSERT INTO students (name, grade)
-      VALUES  (?, ?)
+      VALUES (?,?);
     SQL
 
     DB[:conn].execute(sql, self.name, self.grade)
@@ -38,9 +37,7 @@ class Student
   end
 
   def self.create(name:, grade:)
-    Student.new(name, grade).tap {|student| student.save}
+    Student.new(name, grade).tap{|s| s.save}
   end
-  # Remember, you can access your database connection anywhere in this class
-  #  with DB[:conn]
 
 end
