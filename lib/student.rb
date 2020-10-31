@@ -19,5 +19,5 @@ class Student
 
       DB[:conn].execute(SQL)
     end
-    
+
 end
